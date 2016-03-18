@@ -17,62 +17,62 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.testservice.domain.Author;
-import com.testservice.service.AuthorService;
+import com.testservice.domain.Book;
+import com.testservice.service.BookService;
 
-@Path("/delay/{delay}/authors/")
+@Path("/delay/{delay}/books")
 @Component
-public class AuthorResource extends GeneralResource {
+public class BookResource extends GeneralResource {
 
     @Autowired
-    private AuthorService authorService;
+    private BookService bookService;
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response getAuthors() {
-        List<Author> authors = authorService.getAuthors();
-        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {
+    public Response getBooks() {
+        List<Book> books = bookService.getBooks();
+        GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) {
         };
         return Response.ok(entity).build();
     }
 
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response saveAuthor(Author author) {
-        int id = authorService.saveAuthor(author);
+    public Response saveBook(Book book) {
+        int id = bookService.saveBook(book);
         return Response.created(URI.create(String.valueOf(id))).build();
     }
 
     @DELETE
-    public Response deleteAuthors() {
-        authorService.deleteAuthors();
+    public Response deleteBooks() {
+        bookService.deleteBooks();
         return Response.noContent().build();
     }
 
     @GET
     @Path("/{id}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response getAuthor(@PathParam(value = "id") int id) {
-        Author author = authorService.getAuthor(id);
-        if (author == null) {
+    public Response getBook(@PathParam(value = "id") int id) {
+        Book book = bookService.getBook(id);
+        if (book == null) {
             return NOT_FOUND;
         }
-        return Response.ok(author).build();
+        return Response.ok(book).build();
     }
 
     @POST
     @Path("/{id}")
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updateAuthor(Author author, @PathParam(value = "id") int id) {
-        author.setId(id);
-        authorService.updateAuthor(author);
+    public Response updateBook(Book book, @PathParam(value = "id") int id) {
+        book.setId(id);
+        bookService.updateBook(book);
         return Response.noContent().build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteAuthor(@PathParam(value = "id") int id) {
-        authorService.deleteAuthor(id);
+    public Response deleteBook(@PathParam(value = "id") int id) {
+        bookService.deleteBook(id);
         return Response.noContent().build();
     }
 }

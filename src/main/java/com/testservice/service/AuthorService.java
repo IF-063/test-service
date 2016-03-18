@@ -35,6 +35,14 @@ public class AuthorService {
             return null;
         }
     }
+    
+    public void deleteAuthors() {
+        jdbcTemplate.update("delete from Author");
+    }
+
+    public void deleteAuthor(int id) {
+        jdbcTemplate.update("delete from Author where id = ?", new Object[] { id });
+    }
 
     public int saveAuthor(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -42,7 +50,7 @@ public class AuthorService {
 
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement("insert into Author values (?,?,?,?,?)",
+                PreparedStatement ps = con.prepareStatement("insert into Author values (?, ?, ?, ?, ?)",
                         Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, 0);
                 ps.setString(2, author.getFirstName());
@@ -56,7 +64,7 @@ public class AuthorService {
     }
 
     public int updateAuthor(Author author) {
-        return jdbcTemplate.update("update Author set firstName=?, lastName=?, age=?, salary=? where id = ?",
+        return jdbcTemplate.update("update Author set firstName = ?, lastName = ?, age = ?, salary = ? where id = ?",
                 new Object[] { author.getFirstName(), author.getLastName(), author.getAge(), author.getSalary(),
                         author.getId() });
     }

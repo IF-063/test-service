@@ -1,0 +1,78 @@
+package com.testservice.service;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+
+import com.testservice.domain.Book;
+
+@Component
+public class BookService {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public List<Book> getBooks() {
+        return jdbcTemplate.query("select * from Book", new BeanPropertyRowMapper<Book>(Book.class));
+    }
+
+    public Book getBook(int id) {
+        try {
+            return jdbcTemplate.queryForObject("select * from Book where id = ?", new Object[] { id },
+                    new BeanPropertyRowMapper<Book>(Book.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public void deleteBooks() {
+        jdbcTemplate.update("delete from Book");
+    }
+
+    public void deleteBook(int id) {
+        jdbcTemplate.update("delete from Book where id = ?", new Object[] { id });
+    }
+
+    public int saveBook(Book book) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement("insert into Book values (?, ?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, 0);
+                ps.setString(2, book.getName());
+                ps.setInt(3, book.getPages());
+                ps.setInt(4, book.getAuthorId());
+                return ps;
+            }
+        }, keyHolder);
+        int id = keyHolder.getKey().intValue();
+        book.setId(id);
+        saveBookRenamedLogs(book);
+        return id;
+    }
+
+    public int updateBook(Book book) {
+        saveBookRenamedLogs(book);
+        return jdbcTemplate.update("update Book set name = ?, pages = ?, authorId = ? where id = ?",
+                new Object[] { book.getName(), book.getPages(), book.getAuthorId(), book.getId() });
+    }
+
+    private void saveBookRenamedLogs(Book book) {
+        jdbcTemplate.update("insert into BookNameChanges values (?, ?, ?)",
+                new Object[] { null, book.getId(), book.getName() });
+    }
+}
