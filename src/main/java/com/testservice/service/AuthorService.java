@@ -1,11 +1,18 @@
 package com.testservice.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.testservice.domain.Author;
@@ -27,5 +34,30 @@ public class AuthorService {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    public int saveAuthor(Author author) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement("insert into Author values (?,?,?,?,?)",
+                        Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, 0);
+                ps.setString(2, author.getFirstName());
+                ps.setString(3, author.getLastName());
+                ps.setInt(4, author.getAge());
+                ps.setDouble(5, author.getSalary());
+                return ps;
+            }
+        }, keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+    public int updateAuthor(Author author) {
+        return jdbcTemplate.update("update Author set firstName=?, lastName=?, age=?, salary=? where id = ?",
+                new Object[] { author.getFirstName(), author.getLastName(), author.getAge(), author.getSalary(),
+                        author.getId() });
     }
 }
