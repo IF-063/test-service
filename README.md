@@ -1,4 +1,4 @@
-## Required request/response headers
+## Required request headers
 To load / send representations of resources use 'Content-Type' / 'Accept' headers.
 
 ## URL patterns
