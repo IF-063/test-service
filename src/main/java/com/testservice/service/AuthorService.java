@@ -35,7 +35,7 @@ public class AuthorService {
             return null;
         }
     }
-    
+
     public void deleteAuthors() {
         jdbcTemplate.update("delete from Author");
     }
@@ -44,7 +44,7 @@ public class AuthorService {
         jdbcTemplate.update("delete from Author where id = ?", new Object[] { id });
     }
 
-    public int saveAuthor(Author author) {
+    public Author saveAuthor(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -60,11 +60,12 @@ public class AuthorService {
                 return ps;
             }
         }, keyHolder);
-        return keyHolder.getKey().intValue();
+        author.setId(keyHolder.getKey().intValue());
+        return author;
     }
 
-    public int updateAuthor(Author author) {
-        return jdbcTemplate.update("update Author set firstName = ?, lastName = ?, age = ?, salary = ? where id = ?",
+    public void updateAuthor(Author author) {
+        jdbcTemplate.update("update Author set firstName = ?, lastName = ?, age = ?, salary = ? where id = ?",
                 new Object[] { author.getFirstName(), author.getLastName(), author.getAge(), author.getSalary(),
                         author.getId() });
     }

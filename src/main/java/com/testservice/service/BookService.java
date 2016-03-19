@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import com.testservice.domain.Author;
 import com.testservice.domain.Book;
 
 @Component
@@ -29,7 +30,7 @@ public class BookService {
 
     public Book getBook(int id) {
         try {
-            return jdbcTemplate.queryForObject("select * from Book where id = ?", new Object[] { id },
+            return jdbcTemplate.queryForObject("select * from Book where id=?", new Object[] { id },
                     new BeanPropertyRowMapper<Book>(Book.class));
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -41,10 +42,10 @@ public class BookService {
     }
 
     public void deleteBook(int id) {
-        jdbcTemplate.update("delete from Book where id = ?", new Object[] { id });
+        jdbcTemplate.update("delete from Book where id=?", new Object[] { id });
     }
 
-    public int saveBook(Book book) {
+    public Book saveBook(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -59,20 +60,24 @@ public class BookService {
                 return ps;
             }
         }, keyHolder);
-        int id = keyHolder.getKey().intValue();
-        book.setId(id);
+        book.setId(keyHolder.getKey().intValue());
         saveBookRenamedLogs(book);
-        return id;
+        return book;
     }
 
-    public int updateBook(Book book) {
-        saveBookRenamedLogs(book);
-        return jdbcTemplate.update("update Book set name = ?, pages = ?, authorId = ? where id = ?",
+    public void updateBook(Book book) {
+        jdbcTemplate.update("update Book set name=?, pages=?, authorId=? where id=?",
                 new Object[] { book.getName(), book.getPages(), book.getAuthorId(), book.getId() });
+        saveBookRenamedLogs(book);
     }
 
     private void saveBookRenamedLogs(Book book) {
         jdbcTemplate.update("insert into BookNameChanges values (?, ?, ?)",
                 new Object[] { null, book.getId(), book.getName() });
+    }
+
+    public List<Book> getBooksByAuthor(Author author) {
+        return jdbcTemplate.query("select * from Book where authorId=?", new BeanPropertyRowMapper<Book>(Book.class),
+                new Object[] { author.getId() });
     }
 }

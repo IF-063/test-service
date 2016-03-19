@@ -1,6 +1,5 @@
 package com.testservice.resource;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -31,22 +30,21 @@ public class BookResource extends GeneralResource {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getBooks() {
         List<Book> books = bookService.getBooks();
-        GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) {
-        };
-        return Response.ok(entity).build();
+        GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) {};
+        return ok(entity);
     }
 
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response saveBook(Book book) {
-        int id = bookService.saveBook(book);
-        return Response.created(URI.create(String.valueOf(id))).build();
+        book = bookService.saveBook(book);
+        return ok(book);
     }
 
     @DELETE
     public Response deleteBooks() {
         bookService.deleteBooks();
-        return Response.noContent().build();
+        return NO_CONTENT;
     }
 
     @GET
@@ -57,7 +55,7 @@ public class BookResource extends GeneralResource {
         if (book == null) {
             return NOT_FOUND;
         }
-        return Response.ok(book).build();
+        return ok(book);
     }
 
     @POST
@@ -66,13 +64,13 @@ public class BookResource extends GeneralResource {
     public Response updateBook(Book book, @PathParam(value = "id") int id) {
         book.setId(id);
         bookService.updateBook(book);
-        return Response.noContent().build();
+        return NO_CONTENT;
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteBook(@PathParam(value = "id") int id) {
         bookService.deleteBook(id);
-        return Response.noContent().build();
+        return NO_CONTENT;
     }
 }

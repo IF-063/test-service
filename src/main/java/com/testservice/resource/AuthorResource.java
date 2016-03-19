@@ -1,6 +1,5 @@
 package com.testservice.resource;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -18,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.testservice.domain.Author;
+import com.testservice.domain.Book;
 import com.testservice.service.AuthorService;
+import com.testservice.service.BookService;
 
 @Path("/delay/{delay}/authors/")
 @Component
@@ -27,26 +28,28 @@ public class AuthorResource extends GeneralResource {
     @Autowired
     private AuthorService authorService;
 
+    @Autowired
+    private BookService bookService;
+
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAuthors() {
         List<Author> authors = authorService.getAuthors();
-        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {
-        };
-        return Response.ok(entity).build();
+        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {};
+        return ok(entity);
     }
 
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response saveAuthor(Author author) {
-        int id = authorService.saveAuthor(author);
-        return Response.created(URI.create(String.valueOf(id))).build();
+        author = authorService.saveAuthor(author);
+        return ok(author);
     }
 
     @DELETE
     public Response deleteAuthors() {
         authorService.deleteAuthors();
-        return Response.noContent().build();
+        return NO_CONTENT;
     }
 
     @GET
@@ -57,7 +60,7 @@ public class AuthorResource extends GeneralResource {
         if (author == null) {
             return NOT_FOUND;
         }
-        return Response.ok(author).build();
+        return ok(author);
     }
 
     @POST
@@ -66,13 +69,23 @@ public class AuthorResource extends GeneralResource {
     public Response updateAuthor(Author author, @PathParam(value = "id") int id) {
         author.setId(id);
         authorService.updateAuthor(author);
-        return Response.noContent().build();
+        return NO_CONTENT;
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteAuthor(@PathParam(value = "id") int id) {
         authorService.deleteAuthor(id);
-        return Response.noContent().build();
+        return NO_CONTENT;
+    }
+
+    @POST
+    @Path("/books")
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Response getBooksByAuthor(Author author) {
+        List<Book> books = bookService.getBooksByAuthor(author);
+        GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) {};
+        return ok(entity);
     }
 }
