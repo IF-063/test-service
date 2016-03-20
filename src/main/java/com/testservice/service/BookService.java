@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import com.testservice.domain.Author;
 import com.testservice.domain.Book;
 
+//TODO Taras O. should use aspectj instead of spring-aop to avoid using AopContext.
 @Component
 public class BookService {
 
