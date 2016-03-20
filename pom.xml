@@ -15,6 +15,7 @@
     <commons-dbcp-version>1.4</commons-dbcp-version>
     <mysql-connector-java-version>5.1.38</mysql-connector-java-version>
     <org.codehaus.jackson-version>1.9.13</org.codehaus.jackson-version>
+    <log4j-version>1.2.17</log4j-version>
   </properties>
 
   <dependencies>
@@ -76,7 +77,13 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-aspects</artifactId>
       <version>${org.springframework-version}</version>
-      </dependency>
+    </dependency>
+      
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j-version}</version>
+    </dependency>
 
   </dependencies>
 

@@ -2,6 +2,7 @@ package com.testservice.aspect;
 
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class MeasureQueryPeriodAspect {
+    
+    private static final Logger LOGGER = Logger.getLogger(MeasureQueryPeriodAspect.class);
 
     @Around("execution(* com.testservice.service.*.*(..))")
     public Object timeMeasuring(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -25,7 +28,7 @@ public class MeasureQueryPeriodAspect {
         out.append("): ");
         out.append(e);
         out.append(" ms.");
-        System.out.println(out);
+        LOGGER.info(out);
         return result;
     }
 }

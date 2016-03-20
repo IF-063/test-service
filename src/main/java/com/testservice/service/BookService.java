@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Random;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -23,6 +25,8 @@ public class BookService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private static final Random random = new Random();
 
     public List<Book> getBooks() {
         return jdbcTemplate.query("select * from Book", new BeanPropertyRowMapper<Book>(Book.class));
@@ -61,17 +65,21 @@ public class BookService {
             }
         }, keyHolder);
         book.setId(keyHolder.getKey().intValue());
-        saveBookRenamedLogs(book);
+        if (random.nextInt(10) < 4) {
+            ((BookService) AopContext.currentProxy()).saveBookRenamedLogs(book);
+        }
         return book;
     }
 
     public void updateBook(Book book) {
         jdbcTemplate.update("update Book set name=?, pages=?, authorId=? where id=?",
                 new Object[] { book.getName(), book.getPages(), book.getAuthorId(), book.getId() });
-        saveBookRenamedLogs(book);
+        if (random.nextInt(10) < 4) {
+            ((BookService) AopContext.currentProxy()).saveBookRenamedLogs(book);
+        }
     }
 
-    private void saveBookRenamedLogs(Book book) {
+    public void saveBookRenamedLogs(Book book) {
         jdbcTemplate.update("insert into BookNameChanges values (?, ?, ?)",
                 new Object[] { null, book.getId(), book.getName() });
     }
