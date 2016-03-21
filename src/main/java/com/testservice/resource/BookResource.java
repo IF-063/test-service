@@ -38,6 +38,7 @@ public class BookResource extends GeneralResource {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response saveBook(Book book) {
         book = bookService.saveBook(book);
+        logBookName(book);
         return ok(book);
     }
 
@@ -64,6 +65,7 @@ public class BookResource extends GeneralResource {
     public Response updateBook(Book book, @PathParam(value = "id") int id) {
         book.setId(id);
         bookService.updateBook(book);
+        logBookName(book);
         return NO_CONTENT;
     }
 
@@ -72,5 +74,11 @@ public class BookResource extends GeneralResource {
     public Response deleteBook(@PathParam(value = "id") int id) {
         bookService.deleteBook(id);
         return NO_CONTENT;
+    }
+    
+    private void logBookName(Book book) {
+        if (random.nextInt(10) < 4) {
+            bookService.saveBookRenamedLogs(book);
+        }
     }
 }

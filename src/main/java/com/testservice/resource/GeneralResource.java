@@ -14,7 +14,7 @@ public abstract class GeneralResource {
     @PathParam(value = "delay")
     private int delay;
 
-    private static final Random random = new Random();
+    protected static final Random random = new Random();
 
     protected final Response NOT_FOUND = Response.status(Response.Status.NOT_FOUND).build();
     protected final Response NO_CONTENT = Response.status(Response.Status.NO_CONTENT).build();
@@ -36,7 +36,7 @@ public abstract class GeneralResource {
         }
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-    
+
     protected Response ok(Object entity) {
         return Response.ok().entity(entity).build();
     }
