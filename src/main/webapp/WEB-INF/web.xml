@@ -10,7 +10,7 @@
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>com.testservice.resource</param-value>
+      <param-value>com.testservice</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -22,8 +22,7 @@
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/root-context.xml
-    </param-value>
+    <param-value>/WEB-INF/root-context.xml</param-value>
   </context-param>
 
   <listener>
