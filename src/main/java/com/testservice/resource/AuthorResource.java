@@ -30,7 +30,7 @@ public class AuthorResource extends GeneralResource {
 
     @Autowired
     private BookService bookService;
-
+    
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAuthors() {
@@ -79,12 +79,11 @@ public class AuthorResource extends GeneralResource {
         return NO_CONTENT;
     }
 
-    @POST
-    @Path("/books")
-    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @GET
+    @Path("/{id}/books")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response getBooksByAuthor(Author author) {
-        List<Book> books = bookService.getBooksByAuthor(author);
+    public Response getBooksByAuthor(@PathParam(value = "id") int id) {
+        List<Book> books = bookService.getBooksByAuthor(id);
         GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) {};
         return ok(entity);
     }

@@ -29,7 +29,7 @@ public class AuthorService {
 
     public Author getAuthor(int id) {
         try {
-            return jdbcTemplate.queryForObject("select * from Author where id = ?", new Object[] { id },
+            return jdbcTemplate.queryForObject("select * from Author where id=?", new Object[] { id },
                     new BeanPropertyRowMapper<Author>(Author.class));
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -41,7 +41,7 @@ public class AuthorService {
     }
 
     public void deleteAuthor(int id) {
-        jdbcTemplate.update("delete from Author where id = ?", new Object[] { id });
+        jdbcTemplate.update("delete from Author where id=?", new Object[] { id });
     }
 
     public Author saveAuthor(Author author) {
@@ -65,8 +65,7 @@ public class AuthorService {
     }
 
     public void updateAuthor(Author author) {
-        jdbcTemplate.update("update Author set firstName = ?, lastName = ?, age = ?, salary = ? where id = ?",
-                new Object[] { author.getFirstName(), author.getLastName(), author.getAge(), author.getSalary(),
-                        author.getId() });
+        jdbcTemplate.update("update Author set firstName=?, lastName=?, age=?, salary=? where id=?", new Object[] {
+                author.getFirstName(), author.getLastName(), author.getAge(), author.getSalary(), author.getId() });
     }
 }

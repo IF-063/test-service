@@ -15,7 +15,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import com.testservice.domain.Author;
 import com.testservice.domain.Book;
 
 @Component
@@ -74,8 +73,8 @@ public class BookService {
                 new Object[] { null, book.getId(), book.getName() });
     }
 
-    public List<Book> getBooksByAuthor(Author author) {
+    public List<Book> getBooksByAuthor(int id) {
         return jdbcTemplate.query("select * from Book where authorId=?", new BeanPropertyRowMapper<Book>(Book.class),
-                new Object[] { author.getId() });
+                new Object[] { id });
     }
 }
