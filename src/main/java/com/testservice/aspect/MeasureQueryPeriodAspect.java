@@ -28,7 +28,7 @@ public class MeasureQueryPeriodAspect {
         out.append("): ");
         out.append(e);
         out.append(" ms.");
-        LOGGER.info(out);
+       // LOGGER.info(out);
         return result;
     }
 }
