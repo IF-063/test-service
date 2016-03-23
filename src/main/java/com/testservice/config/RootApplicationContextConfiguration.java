@@ -1,7 +1,8 @@
 package com.testservice.config;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 @ComponentScan("com.testservice")
-
 @PropertySource("classpath:datasource.properties")
 @EnableAspectJAutoProxy
-
 public class RootApplicationContextConfiguration {
 
-    @Autowired
+    @Resource
     private Environment environment;
 
     @Bean(destroyMethod = "close")

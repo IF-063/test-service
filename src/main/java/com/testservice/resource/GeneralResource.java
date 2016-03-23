@@ -4,20 +4,24 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 public abstract class GeneralResource {
-
-    @PathParam(value = "delay")
+    
+    @QueryParam("delay")
     private int delay;
+
+    @QueryParam("logging")
+    protected boolean logging;
 
     protected static final Random random = new Random();
 
     protected final Response NOT_FOUND = Response.status(Response.Status.NOT_FOUND).build();
     protected final Response NO_CONTENT = Response.status(Response.Status.NO_CONTENT).build();
+    protected final Response UNAUTHORIZED = Response.status(Response.Status.UNAUTHORIZED).build();
 
     private void delay() {
         int sleepTime = random.nextInt(delay) + 1;

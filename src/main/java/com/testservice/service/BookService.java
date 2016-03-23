@@ -23,11 +23,11 @@ public class BookService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Book> getBooks() {
+    public List<Book> loadAll() {
         return jdbcTemplate.query("select * from Book", new BeanPropertyRowMapper<Book>(Book.class));
     }
 
-    public Book getBook(int id) {
+    public Book load(int id) {
         try {
             return jdbcTemplate.queryForObject("select * from Book where id=?", new Object[] { id },
                     new BeanPropertyRowMapper<Book>(Book.class));
@@ -36,15 +36,15 @@ public class BookService {
         }
     }
 
-    public void deleteBooks() {
+    public void deleteAll() {
         jdbcTemplate.update("delete from Book");
     }
 
-    public void deleteBook(int id) {
+    public void delete(int id) {
         jdbcTemplate.update("delete from Book where id=?", new Object[] { id });
     }
 
-    public Book saveBook(Book book) {
+    public Book save(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -63,13 +63,13 @@ public class BookService {
         return book;
     }
 
-    public void updateBook(Book book) {
+    public void update(Book book) {
         jdbcTemplate.update("update Book set name=?, pages=?, authorId=? where id=?",
                 new Object[] { book.getName(), book.getPages(), book.getAuthorId(), book.getId() });
     }
 
-    public void saveBookRenamedLogs(Book book) {
-        jdbcTemplate.update("insert into BookNameChanges values (?, ?, ?)",
+    public void saveLogs(Book book) {
+        jdbcTemplate.update("insert into BookLogs values (?, ?, ?)",
                 new Object[] { null, book.getId(), book.getName() });
     }
 

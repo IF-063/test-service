@@ -23,11 +23,11 @@ public class AuthorService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Author> getAuthors() {
+    public List<Author> loadAll() {
         return jdbcTemplate.query("select * from Author", new BeanPropertyRowMapper<Author>(Author.class));
     }
 
-    public Author getAuthor(int id) {
+    public Author load(int id) {
         try {
             return jdbcTemplate.queryForObject("select * from Author where id=?", new Object[] { id },
                     new BeanPropertyRowMapper<Author>(Author.class));
@@ -36,15 +36,15 @@ public class AuthorService {
         }
     }
 
-    public void deleteAuthors() {
+    public void deleteAll() {
         jdbcTemplate.update("delete from Author");
     }
 
-    public void deleteAuthor(int id) {
+    public void delete(int id) {
         jdbcTemplate.update("delete from Author where id=?", new Object[] { id });
     }
 
-    public Author saveAuthor(Author author) {
+    public Author save(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -64,7 +64,12 @@ public class AuthorService {
         return author;
     }
 
-    public void updateAuthor(Author author) {
+    public void saveLogs(Author author) {
+        jdbcTemplate.update("insert into AuthorLogs values (?, ?, ?, ?)",
+                new Object[] { null, author.getId(), author.getFirstName(), author.getLastName() });
+    }
+
+    public void update(Author author) {
         jdbcTemplate.update("update Author set firstName=?, lastName=?, age=?, salary=? where id=?", new Object[] {
                 author.getFirstName(), author.getLastName(), author.getAge(), author.getSalary(), author.getId() });
     }
