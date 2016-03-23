@@ -2,6 +2,7 @@ package com.testservice.resource;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,6 +21,7 @@ import com.testservice.domain.Book;
 import com.testservice.service.BookService;
 
 @Path("/books")
+@RolesAllowed({ "user", "admin" })
 @Component
 public class BookResource extends GeneralResource {
 
@@ -79,5 +81,4 @@ public class BookResource extends GeneralResource {
         bookService.delete(id);
         return NO_CONTENT;
     }
-
 }

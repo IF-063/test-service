@@ -2,6 +2,7 @@ package com.testservice.resource;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,7 @@ import com.testservice.service.AuthorService;
 import com.testservice.service.BookService;
 
 @Path("/authors/")
+@RolesAllowed("user")
 @Component
 public class AuthorResource extends GeneralResource {
 
@@ -34,7 +35,7 @@ public class AuthorResource extends GeneralResource {
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response getAuthors(SecurityContext securityContext) {
+    public Response getAuthors() {
         List<Author> authors = authorService.loadAll();
         GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {};
         return ok(entity);

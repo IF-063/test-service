@@ -1,14 +1,10 @@
 package com.testservice.domain;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Author implements Serializable{
+public class Author {
 
-    private static final long serialVersionUID = -4364302658582883208L;
-    
     private int id;
     private String firstName;
     private String lastName;
