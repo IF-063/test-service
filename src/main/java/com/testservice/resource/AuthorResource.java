@@ -36,8 +36,7 @@ public class AuthorResource extends GeneralResource {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAuthors(SecurityContext securityContext) {
         List<Author> authors = authorService.loadAll();
-        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {
-        };
+        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {};
         return ok(entity);
     }
 
