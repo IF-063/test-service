@@ -36,12 +36,6 @@
       <artifactId>spring-jdbc</artifactId>
       <version>${org.springframework-version}</version>
     </dependency>
-    
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aspects</artifactId>
-      <version>${org.springframework-version}</version>
-    </dependency>
 
 
     <dependency>
@@ -86,7 +80,6 @@
       <artifactId>commons-collections4</artifactId>
       <version>4.0</version>
     </dependency>
-
 
   </dependencies>
 

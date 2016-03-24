@@ -2,6 +2,12 @@ package com.testservice.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * The Author class represents {@code Author} entity stored in the database.
+ * 
+ * @author taras
+ *
+ */
 @XmlRootElement
 public class Author {
 

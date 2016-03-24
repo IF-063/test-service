@@ -2,12 +2,18 @@ package com.testservice.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * The Book class represents {@code Book} entity stored in the database.
+ * 
+ * @author taras
+ *
+ */
 @XmlRootElement
 public class Book {
-    
+
     private int id;
     private String name;
-    private int pages;
+    private int year;
     private int authorId;
 
     public Book() { }
@@ -28,12 +34,12 @@ public class Book {
         this.name = name;
     }
 
-    public int getPages() {
-        return pages;
+    public int getYear() {
+        return year;
     }
 
-    public void setPages(int pages) {
-        this.pages = pages;
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public int getAuthorId() {
@@ -51,8 +57,8 @@ public class Book {
         builder.append(id);
         builder.append(", name=");
         builder.append(name);
-        builder.append(", pages=");
-        builder.append(pages);
+        builder.append(", year=");
+        builder.append(year);
         builder.append(", authorId=");
         builder.append(authorId);
         builder.append("]");

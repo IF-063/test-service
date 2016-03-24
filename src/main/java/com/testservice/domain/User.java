@@ -2,6 +2,12 @@ package com.testservice.domain;
 
 import java.security.Principal;
 
+/**
+ * The User class represents {@code User} entity stored in the database.
+ * 
+ * @author taras
+ *
+ */
 public class User implements Principal {
 
     private int id;

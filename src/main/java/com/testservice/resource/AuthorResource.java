@@ -22,6 +22,12 @@ import com.testservice.domain.Book;
 import com.testservice.service.AuthorService;
 import com.testservice.service.BookService;
 
+/**
+ * AuthorResource handles requests, which URL starts with '/authors'.
+ * 
+ * @author taras
+ *
+ */
 @Path("/authors/")
 @RolesAllowed("user")
 @Component
@@ -33,14 +39,25 @@ public class AuthorResource extends GeneralResource {
     @Autowired
     private BookService bookService;
 
+    /**
+     * Retrieves all authors.
+     * 
+     * @return {@link Response} entity with Authors List
+     */
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAuthors() {
         List<Author> authors = authorService.loadAll();
-        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) {};
+        GenericEntity<List<Author>> entity = new GenericEntity<List<Author>>(authors) { };
         return ok(entity);
     }
 
+    /**
+     * Handles saving new author.
+     * 
+     * @param author {@link Author} instance should be saved
+     * @return {@link Response} entity with saved {@link Author} instance
+     */
     @POST
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response saveAuthor(Author author) {
@@ -51,23 +68,46 @@ public class AuthorResource extends GeneralResource {
         return ok(author);
     }
 
+    /**
+     * Handles deleting authors.
+     * 
+     * @return if success returns HTTP_STATUS 204
+     */
     @DELETE
     public Response deleteAuthors() {
         authorService.deleteAll();
         return NO_CONTENT;
     }
 
+    /**
+     * Retrieves {@link Author} instance with the identifier.
+     * 
+     * @param id identifier of {@link Author} instance should be retrieved
+     * @return {@link Response} entity with requested Author instance
+     */
     @GET
     @Path("/{id}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAuthor(@PathParam("id") int id) {
-        Author author = authorService.load(id);
+        Author author = null;
+        try {
+            author = authorService.load(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (author == null) {
             return NOT_FOUND;
         }
         return ok(author);
     }
 
+    /**
+     * Updates {@link Author} instance with the identifier.
+     * 
+     * @param author {@link Author} instance should be updated
+     * @param id identifier of {@link Author} instance should be retrieved
+     * @return if success returns HTTP_STATUS 204.
+     */
     @POST
     @Path("/{id}")
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -80,6 +120,12 @@ public class AuthorResource extends GeneralResource {
         return NO_CONTENT;
     }
 
+    /**
+     * Handles deleting author.
+     * 
+     * @param id identifier of {@link Author} instance should be deleted
+     * @return if success returns HTTP_STATUS 204.
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteAuthor(@PathParam("id") int id) {
@@ -87,12 +133,18 @@ public class AuthorResource extends GeneralResource {
         return NO_CONTENT;
     }
 
+    /**
+     * Retrieves all books for the author.
+     * 
+     * @param id identifier of {@link Author} instance which books should be retrieved
+     * @return {@link Response} entity with Books List.
+     */
     @GET
     @Path("/{id}/books")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getBooksByAuthor(@PathParam("id") int id) {
         List<Book> books = bookService.getBooksByAuthor(id);
-        GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) {};
+        GenericEntity<List<Book>> entity = new GenericEntity<List<Book>>(books) { };
         return ok(entity);
     }
 }

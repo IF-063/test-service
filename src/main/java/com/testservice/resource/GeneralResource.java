@@ -8,11 +8,20 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.testservice.domain.Author;
+import com.testservice.domain.Book;
+
 public abstract class GeneralResource {
 
+    /**
+     * Query parameter is used to simulate delay of service response. 
+     */
     @QueryParam("delay")
     private int delay;
 
+    /**
+     *  Query parameter is used to switch logging of save/update {@link Author}/{@link Book} instance. 
+     */
     @QueryParam("logging")
     protected boolean logging;
 
