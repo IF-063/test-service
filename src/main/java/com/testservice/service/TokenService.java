@@ -50,6 +50,7 @@ public class TokenService {
             decodedToken = new String(Base64.getDecoder().decode(token));
             LOGGER.debug("(TRY AUTHENTICATE) decoded token: " + decodedToken);
         } catch (IllegalArgumentException e) {
+            LOGGER.debug("bad token: " + token);
             return false;
         }
         String[] data = decodedToken.split(":");
