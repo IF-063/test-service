@@ -11,8 +11,9 @@ Service logs information in AuthorLogs and BookLogs tables in database.
 Service uses Basic Authentication for user authorization.
 You can use request header or request parameter with name 'Authorization'. 
 
-User with name 'user' is allowed to use next url: '/authors/**', '/books/**;
-User with name 'admin' is allowed to use next url: '/books/**';
+User with name 'user' is allowed to use next url: /authors/, /books/ ;
+
+User with name 'admin' is allowed to use next url: /books/;
 
 ### Author
 /authors
