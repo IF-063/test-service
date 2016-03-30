@@ -2,6 +2,9 @@ package com.testservice.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * The Author class represents {@code Author} entity stored in the database.
  * 
@@ -61,18 +64,6 @@ public class Author {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Author [id=");
-        builder.append(id);
-        builder.append(", firstName=");
-        builder.append(firstName);
-        builder.append(", lastName=");
-        builder.append(lastName);
-        builder.append(", age=");
-        builder.append(age);
-        builder.append(", salary=");
-        builder.append(salary);
-        builder.append("]");
-        return builder.toString();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

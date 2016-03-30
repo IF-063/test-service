@@ -2,6 +2,9 @@ package com.testservice.domain;
 
 import java.security.Principal;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * The User class represents {@code User} entity stored in the database.
  * 
@@ -58,16 +61,6 @@ public class User implements Principal {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("User [id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", password=");
-        builder.append(password);
-        builder.append(", role=");
-        builder.append(role);
-        builder.append("]");
-        return builder.toString();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

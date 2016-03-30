@@ -2,6 +2,9 @@ package com.testservice.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * The Book class represents {@code Book} entity stored in the database.
  * 
@@ -52,16 +55,6 @@ public class Book {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Book [id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", year=");
-        builder.append(year);
-        builder.append(", authorId=");
-        builder.append(authorId);
-        builder.append("]");
-        return builder.toString();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }
