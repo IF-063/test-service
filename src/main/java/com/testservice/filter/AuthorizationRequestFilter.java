@@ -1,4 +1,4 @@
-package com.testservice.config;
+package com.testservice.filter;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
@@ -32,6 +34,7 @@ import com.testservice.service.TokenService;
 @Provider
 @PreMatching
 @Component
+@Priority(Priorities.AUTHORIZATION)
 public class AuthorizationRequestFilter implements ContainerRequestFilter {
 
     private static final String TOKEN_NAME = "Authorization";
@@ -55,29 +58,29 @@ public class AuthorizationRequestFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String token = requestContext.getHeaderString(TOKEN_NAME);
-        LOGGER.debug("headed token: " + token);
+        LOGGER.info("headed token: " + token);
         if (token == null) {
             Map<String, List<String>> map = requestContext.getUriInfo().getQueryParameters();
             if (!CollectionUtils.isEmpty(map)) {
                 token = map.get(TOKEN_NAME).get(0);
-                LOGGER.debug("query param token: " + token);
+                LOGGER.info("query param token: " + token);
             }
         }
         if (token == null) {
-            LOGGER.debug("token not found");
+            LOGGER.info("token not found");
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                                              .entity("User cannot access the resource.")
                                              .build());
         } else {
             token = token.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
             if (!tokenService.contains(token) && !tokenService.tryAuthenticate(token)) {
-                LOGGER.debug("user not authenticated");
+                LOGGER.info("user not authenticated");
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                                                  .entity("User cannot access the resource.")
                                                  .build());
             }
             User user = tokenService.get(token);
-            LOGGER.debug("user: " + user);
+            LOGGER.info("user: " + user);
             requestContext.setSecurityContext(new SecurityContext() {
 
                 @Override

@@ -48,16 +48,16 @@ public class TokenService {
         String decodedToken = null;
         try {
             decodedToken = new String(Base64.getDecoder().decode(token));
-            LOGGER.debug("(TRY AUTHENTICATE) decoded token: " + decodedToken);
+            LOGGER.info("(TRY AUTHENTICATE) decoded token: " + decodedToken);
         } catch (IllegalArgumentException e) {
-            LOGGER.debug("bad token: " + token);
+            LOGGER.info("bad token: " + token);
             return false;
         }
         String[] data = decodedToken.split(":");
         String name = data[0];
         String password = data[1];
         User user = userService.load(name, password);
-        LOGGER.debug("(TRY AUTHENTICATE) user: " + user);
+        LOGGER.info("(TRY AUTHENTICATE) user: " + user);
         if (user != null) {
             map.put(token, user);
             return true;
