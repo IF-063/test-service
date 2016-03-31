@@ -63,7 +63,7 @@ public class AuthorService {
 
     /**
      * Deletes all authors from database.
-     * 
+     * @return Author instance
      * @throws DataAccessException
      */
     public void deleteAll() {
@@ -94,6 +94,7 @@ public class AuthorService {
      * Saves {@link Author} instance to database.
      * 
      * @param author Author instance should be saved in the database
+     * @return Author instance
      * @throws DataAccessException
      */
     public Author save(Author author) {

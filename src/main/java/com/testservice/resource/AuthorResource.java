@@ -111,13 +111,14 @@ public class AuthorResource extends GeneralResource {
     @POST
     @Path("/{id}")
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response updateAuthor(Author author, @PathParam("id") int id) {
         author.setId(id);
         authorService.update(author);
         if (logging) {
             authorService.saveLogs(author);
         }
-        return NO_CONTENT;
+        return ok(author);
     }
 
     /**

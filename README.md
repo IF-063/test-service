@@ -23,7 +23,7 @@ User with name 'admin' is allowed to use next url: /books/;
 
 /authors/{id}
 - GET - loads author by id (returns HTTP_STATUS.OK and requested resources)
-- POST - updates author by id (returns HTTP_STATUS.NO_CONTENT)
+- POST - updates author by id (returns HTTP_STATUS.OK and updated resources)
 - DELETE - deletes the author (returns HTTP_STATUS.NO_CONTENT)
 
 /authors/{id}/books
