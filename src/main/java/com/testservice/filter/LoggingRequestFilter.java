@@ -65,7 +65,8 @@ public class LoggingRequestFilter implements ContainerRequestFilter {
         out.append("Headers: ");
         out.append(requestContext.getHeaders());
 
-        try (InputStream is = requestContext.getEntityStream()) {
+        try {
+            InputStream is = requestContext.getEntityStream();
             if (is.available() > 0) {
                 byte[] bytes = IOUtils.toByteArray(is);
                 out.append(DELIMITER);
